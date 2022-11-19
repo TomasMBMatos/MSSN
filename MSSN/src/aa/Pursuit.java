@@ -14,8 +14,6 @@ public class Pursuit extends Behavior {
 		CelestialBody bodyTarget = me.eye.target;
 		PVector d = bodyTarget.getVel().mult(me.dna.deltaTPursuit);
 		PVector target = PVector.add(bodyTarget.getPos(), d);
-		PVector vd = PVector.sub(target, me.getPos());
-		return vd.mult(-1);
+		return PVector.sub(target, me.getPos());
 	}
-
 }

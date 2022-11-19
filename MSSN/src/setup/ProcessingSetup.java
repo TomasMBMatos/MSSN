@@ -5,6 +5,9 @@ import java.util.Random;
 import java.util.Scanner;
 
 import aa.BoidApp;
+import aa.FlockLeaderApp;
+import aa.FlockTestApp;
+import aa.ReynoldsTestApp;
 import ca.TestCA;
 import dla.DLA;
 import gof.GoF;
@@ -55,7 +58,7 @@ public class ProcessingSetup extends PApplet{
 	public static void main(String[] args) {
 		
 		
-		app = new BoidApp();
+		app = new ReynoldsTestApp();
 		//app = new ControlGUIApp();
 		//app = new SolarSystemApp();
 		 //app = new ParticleSystemApp();

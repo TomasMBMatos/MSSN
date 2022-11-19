@@ -23,7 +23,7 @@ public class BoidApp implements IProcessingApp {
 	@Override
 	public void setup(PApplet p) {
 		plt = new SubPlot(window,viewport,p.width,p.height);
-		b = new Boid(new PVector(),new PVector(),1,0.5f,p.color(0),p,plt);
+		b = new Boid(new PVector(),1,0.5f,p.color(0),p,plt);
 		b.addBehavior(new Seek(1f));
 		b.addBehavior(new Flee(1f));
 		b.addBehavior(new Wander(1f));

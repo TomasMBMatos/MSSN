@@ -7,7 +7,7 @@ import tools.SubPlot;
 
 public class CelestialBody extends Mover {
 
-	private int color;
+	public int color;
 	private static double G = 6.67e-11;
 	PImage img;
 
@@ -32,5 +32,4 @@ public class CelestialBody extends Mover {
 		p.image(img, pp[0] - r[0] / 2, pp[1] - r[0] / 2);
 		p.popStyle();
 	}
-
 }
