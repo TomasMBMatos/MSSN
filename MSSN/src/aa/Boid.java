@@ -53,7 +53,7 @@ public class Boid extends CelestialBody {
 	}
 
 	public void setShape(PApplet p, SubPlot plt) {
-		float[] rr = plt.getDimInPixel(radius,radius);
+		float[] rr = plt.getVectorCoord(radius,radius);
 		shape = p.createShape();
 		shape.beginShape();
 		shape.noStroke();
@@ -134,8 +134,10 @@ public class Boid extends CelestialBody {
 	public void display(PApplet p, SubPlot plt) {
 		p.pushMatrix();
 		float[] pp = plt.getPixelCoord(pos.x,pos.y);
+		float[] vv = plt.getVectorCoord(vel.x, vel.y);
+		PVector vaux = new PVector(vv[0], vv[1]);
 		p.translate(pp[0], pp[1]);
-		p.rotate(-vel.heading());
+		p.rotate(-vaux.heading());
 		p.shape(shape);
 		p.popMatrix();
 	}
@@ -149,7 +151,7 @@ public class Boid extends CelestialBody {
 		p.noFill();
 		p.stroke(0,255,0);
 		p.strokeWeight(3);
-		float[] dd = plt.getDimInPixel(dna.visionDistance, dna.visionDistance);
+		float[] dd = plt.getVectorCoord(dna.visionDistance, dna.visionDistance);
 		p.line(0,0,dd[0],0);
 		p.popMatrix();
 		p.popStyle();

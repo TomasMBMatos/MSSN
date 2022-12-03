@@ -26,7 +26,7 @@ public class CelestialBody extends Mover {
 	public void display(PApplet p, SubPlot plt, PImage img) {
 		p.pushStyle();
 		float[] pp = plt.getPixelCoord(pos.x, pos.y);
-		float[] r = plt.getDimInPixel(radius, radius);
+		float[] r = plt.getVectorCoord(radius, radius);
 		
 		img.resize((int) r[0], (int) r[0]);
 		p.image(img, pp[0] - r[0] / 2, pp[1] - r[0] / 2);

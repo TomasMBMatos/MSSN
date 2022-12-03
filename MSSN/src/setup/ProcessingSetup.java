@@ -10,6 +10,7 @@ import aa.FlockTestApp;
 import aa.ReynoldsTestApp;
 import ca.TestCA;
 import dla.DLA;
+import fractals.LSystemApp;
 import gof.GoF;
 import maj.Majority;
 import physics.ControlGUIApp;
@@ -57,11 +58,14 @@ public class ProcessingSetup extends PApplet{
 	
 	public static void main(String[] args) {
 		
-		
-		app = new ReynoldsTestApp();
+		//app = new BoidApp();
+		//app = new ReynoldsTestApp();
 		//app = new ControlGUIApp();
 		//app = new SolarSystemApp();
-		 //app = new ParticleSystemApp();
+		//app = new ParticleSystemApp();
+		//app = new FlockTestApp();
+		//app = new FlockLeaderApp();
+		app = new LSystemApp();
 		
 		/**
 		 // ************** 1 Work Code Here ***********

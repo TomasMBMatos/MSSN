@@ -34,7 +34,7 @@ public class Particle extends Mover {
 		p.fill(color,alpha);
 		
 		float[] pp = plt.getPixelCoord(pos.x,pos.y);
-		float[] r = plt.getDimInPixel(radius,radius);
+		float[] r = plt.getVectorCoord(radius,radius);
 		
 		p.noStroke();
 		p.circle(pp[0], pp[1], 2*r[0]);
