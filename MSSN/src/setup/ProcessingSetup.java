@@ -10,6 +10,7 @@ import aa.FlockTestApp;
 import aa.ReynoldsTestApp;
 import ca.TestCA;
 import dla.DLA;
+import fractals.ForestApp;
 import fractals.LSystemApp;
 import gof.GoF;
 import maj.Majority;
@@ -65,7 +66,7 @@ public class ProcessingSetup extends PApplet{
 		//app = new ParticleSystemApp();
 		//app = new FlockTestApp();
 		//app = new FlockLeaderApp();
-		app = new LSystemApp();
+		app = new ForestApp();
 		
 		/**
 		 // ************** 1 Work Code Here ***********
