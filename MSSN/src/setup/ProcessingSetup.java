@@ -12,6 +12,7 @@ import ca.TestCA;
 import dla.DLA;
 import fractals.ForestApp;
 import fractals.LSystemApp;
+import fractals.MandelbrotApp;
 import gof.GoF;
 import maj.Majority;
 import physics.ControlGUIApp;
@@ -23,7 +24,7 @@ import processing.core.PImage;
 
 public class ProcessingSetup extends PApplet{
 
-		public static IProcessingApp app;
+		public static IProcessingApp2 app;
 		private int lastUpdate;
 		PImage img;
 		
@@ -38,15 +39,20 @@ public class ProcessingSetup extends PApplet{
 	public void setup(){
 		app.setup(this);
 		lastUpdate=millis();
-	
-	}
-	public void keyPressed() {
-		app.keyPressed(this);
-		
 	}
 	public void mousePressed() {
 		app.mousePressed(this);
 	}
+	public void mouseReleased() {
+		app.mouseReleased(this);
+	}
+	public void mouseDragged() {
+		app.mouseDragged(this);
+	}
+	public void keyPressed() {
+		app.keyPressed(this);
+	}
+
 	@Override
 	public void draw(){
 	
@@ -66,7 +72,8 @@ public class ProcessingSetup extends PApplet{
 		//app = new ParticleSystemApp();
 		//app = new FlockTestApp();
 		//app = new FlockLeaderApp();
-		app = new ForestApp();
+		//app = new ForestApp();
+		app = new MandelbrotApp();
 		
 		/**
 		 // ************** 1 Work Code Here ***********

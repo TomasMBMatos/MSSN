@@ -2,13 +2,13 @@ package fractals;
 
 import processing.core.PApplet;
 import processing.core.PVector;
-import setup.IProcessingApp;
+import setup.IProcessingApp2;
 import tools.SubPlot;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ForestApp implements IProcessingApp {
+public class ForestApp implements IProcessingApp2 {
 
     private double[] window = {-15, 15, 0, 15};
     private float[] viewport = {0, 0, 1, 1};
@@ -35,6 +35,16 @@ public class ForestApp implements IProcessingApp {
 
     @Override
     public void keyPressed(PApplet p) {
+
+    }
+
+    @Override
+    public void mouseReleased(PApplet p) {
+
+    }
+
+    @Override
+    public void mouseDragged(PApplet p) {
 
     }
 

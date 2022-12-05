@@ -2,10 +2,10 @@ package fractals;
 
 import processing.core.PApplet;
 import processing.core.PVector;
-import setup.IProcessingApp;
+import setup.IProcessingApp2;
 import tools.SubPlot;
 
-public class LSystemApp implements IProcessingApp {
+public class LSystemApp implements IProcessingApp2 {
 
     private LSystem lsys;
     private double[] window = {-15, 15, 0, 15};
@@ -35,6 +35,16 @@ public class LSystemApp implements IProcessingApp {
 
     @Override
     public void keyPressed(PApplet p) {
+
+    }
+
+    @Override
+    public void mouseReleased(PApplet p) {
+
+    }
+
+    @Override
+    public void mouseDragged(PApplet p) {
 
     }
 
