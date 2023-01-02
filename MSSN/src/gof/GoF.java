@@ -5,6 +5,7 @@ import ca.CellularAutomata;
 import processing.core.PApplet;
 import processing.sound.SoundFile;
 import setup.IProcessingApp;
+import tools.SubPlot;
 
 public class GoF implements IProcessingApp {
     private int rows = 150;
@@ -15,6 +16,7 @@ public class GoF implements IProcessingApp {
     private String survive = "23";
     private String born = "3";
     SoundFile moving;
+    private SubPlot plt;
     
     
 
@@ -34,7 +36,7 @@ public class GoF implements IProcessingApp {
     public void setup(PApplet p) {
         SoundFile music=new SoundFile(p,"Undertale.mp3");
         music.play();
-        ca = new CellularAutomata(p,cols, rows, states, radius,survive,born);
+        ca = new CellularAutomata(p, plt, cols, rows, states, radius,survive,born);
         ca.initRandom();
         ca.display(p);
       

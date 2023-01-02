@@ -1,6 +1,7 @@
 package ca;
 import processing.core.PApplet;
 import processing.sound.SoundFile;
+import tools.SubPlot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,33 +14,33 @@ public class CellularAutomata {
 	private final int radius;
 	private final Cell[][] cells;
 	private final int[] colors;
-	private final int cellwidth,cellheight;
+	protected final float cellwidth,cellheight;
 	private PApplet p = new PApplet();
+	protected float xmin, ymin;
+	private SubPlot plt;
 
 	private String survive;
 	private String born;
 	
 	
-	public CellularAutomata( PApplet p,int ncols, int nrows, int nstates, int radius, String survive, String born) {
+	public CellularAutomata(PApplet p, SubPlot plt, int ncols, int nrows, int nstates, int radius, String survive, String born) {
 		this.nrows=nrows;
 		this.ncols=ncols;
 		this.nstates=nstates;
 		this.radius=radius;
 		cells = new Cell[ncols][nrows];
 		colors = new int[nstates];
-		cellwidth=p.width/ncols;
-		cellheight=p.height/nrows;
+		float[] bb = plt.getBoundingBox();
+		xmin = bb[0];
+		ymin = bb[1];
+		cellwidth=bb[2]/ncols;
+		cellheight=bb[3]/nrows;
+		this.plt = plt;
 		this.survive=survive;
 		this.born=born;
 		createCells();
 		setStateColors(p);
 		
-	}
-	public int getCellWidth() {
-		return cellwidth;
-	}
-	public int getCellHeight() {
-		return cellheight;
 	}
 	
 	public void setStateColors(PApplet p) {
@@ -82,11 +83,18 @@ public class CellularAutomata {
 	public void init() {
 		
 	}
-	public Cell pixel2cell(int x, int y) {
-		int row =y/cellheight;
-		int col =x/cellwidth;
+
+	public Cell world2Cell(double x, double y) {
+		float[] xy = plt.getPixelCoord(x, y);
+		return pixel2cell(xy[0], xy[1]);
+	}
+	public Cell pixel2cell(float x, float y) {
+		int row = (int) ((int)(y-ymin)/cellheight);
+		int col = (int) ((int)(x-xmin)/cellwidth);
 		if (row >= nrows) row = nrows - 1;
 		if (col >= ncols) col = ncols - 1;
+		if(row < 0) row = 0;
+		if(col < 0) row = 0;
 		return cells[col][row];
 	}
 	

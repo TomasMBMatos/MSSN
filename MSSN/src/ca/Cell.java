@@ -29,7 +29,9 @@ public class Cell {
 	}
 
 	public void display(PApplet p) {
+		p.pushStyle();
 		p.fill(ca.getStateColors()[state]);
-		p.rect(col*ca.getCellWidth(),row*ca.getCellHeight(),ca.getCellWidth(),ca.getCellHeight());
+		p.rect(ca.xmin + col*ca.cellwidth,ca.ymin + row*ca.cellheight,ca.cellwidth,ca.cellheight);
+		p.popStyle();
 	}
 }
