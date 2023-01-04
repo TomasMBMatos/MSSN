@@ -3,9 +3,9 @@ import processing.core.PApplet;
 
 public class Cell {
 	 int col,row;
-	private int state;
+	protected int state;
 	private Cell[] neighbours;
-	private CellularAutomata ca;
+	protected CellularAutomata ca;
 	
 	public Cell(CellularAutomata ca,int col, int row) {
 		this.ca=ca;
@@ -18,7 +18,7 @@ public class Cell {
 	public void setNeighbours(Cell[] neigh) {
 		this.neighbours=neigh;
 	}
-	public Cell[] getCells() {
+	public Cell[] getNeighbours() {
 		return neighbours;
 	}
 	public void setState(int  state) {
@@ -30,6 +30,7 @@ public class Cell {
 
 	public void display(PApplet p) {
 		p.pushStyle();
+		p.noStroke();
 		p.fill(ca.getStateColors()[state]);
 		p.rect(ca.xmin + col*ca.cellwidth,ca.ymin + row*ca.cellheight,ca.cellwidth,ca.cellheight);
 		p.popStyle();

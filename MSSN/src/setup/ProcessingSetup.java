@@ -9,7 +9,11 @@ import aa.FlockLeaderApp;
 import aa.FlockTestApp;
 import aa.ReynoldsTestApp;
 import ca.TestCA;
+import ca.TestMajorityCA;
 import dla.DLA;
+import ecosystem.TestEcosystemApp;
+import ecosystem.TestObstacles;
+import ecosystem.TestTerrainApp;
 import fractals.ForestApp;
 import fractals.LSystemApp;
 import fractals.MandelbrotApp;
@@ -64,17 +68,8 @@ public class ProcessingSetup extends PApplet{
 	}
 	
 	public static void main(String[] args) {
-		
-		//app = new BoidApp();
-		//app = new ReynoldsTestApp();
-		//app = new ControlGUIApp();
-		//app = new SolarSystemApp();
-		//app = new ParticleSystemApp();
-		//app = new FlockTestApp();
-		//app = new FlockLeaderApp();
-		//app = new ForestApp();
-		app = new MandelbrotApp();
-		
+		app = new TestEcosystemApp();
+
 		/**
 		 // ************** 1 Work Code Here ***********
 		Scanner sc= new Scanner(System.in);    //System.in is a standard input stream  

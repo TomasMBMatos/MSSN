@@ -15,7 +15,8 @@ public class ParticleSystem extends Mover {
 	
 
 	protected ParticleSystem(PVector pos, PVector vel, float mass, float radius,int particleColor,float lifetime, PVector particleSpeed) {
-		super(pos, vel, mass, radius);
+		super(pos, vel, mass);
+		this.radius = radius;
 		this.particleColor = particleColor;
 		this.lifetime = lifetime;
 		this.particles = new ArrayList<Particle>();

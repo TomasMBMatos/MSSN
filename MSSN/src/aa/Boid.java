@@ -16,7 +16,7 @@ public class Boid extends CelestialBody {
 	private PShape shape;
 	protected DNA dna;
 	protected Eye eye;
-	private List<Behavior> behaviors;
+	protected List<Behavior> behaviors;
 	protected float phiWander;
 	private double[] window;
 	private float sumWeights;
@@ -33,6 +33,24 @@ public class Boid extends CelestialBody {
 		window = plt.getWindow();
 		dna = new DNA();
 		setShape(p,plt);
+	}
+
+	public void mutateBehaviors() {
+		for(Behavior behavior : behaviors) {
+			if(behavior instanceof AvoidObstacle) {
+				behavior.weight += DNA.random(.5f, .5f);
+				behavior.weight = Math.max(0, behavior.weight);
+			}
+		}
+		updateSumWeights();
+	}
+
+	public List<Behavior> getBehaviors() {
+		return behaviors;
+	}
+
+	public DNA getDNA() {
+		return dna;
 	}
 	
 	public void setEye(Eye eye) {

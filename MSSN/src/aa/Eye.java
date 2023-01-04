@@ -18,7 +18,15 @@ public class Eye {
 	public Eye(Boid me,List<CelestialBody> allTrackingBodies) {
 		this.me = me;
 		this.allTrackingBodies = allTrackingBodies;
-		target = allTrackingBodies.get(0);
+		if(allTrackingBodies.size() > 0) {
+			target = allTrackingBodies.get(0);
+		}
+	}
+
+	public Eye(Boid me, Eye eye) {
+		allTrackingBodies = eye.allTrackingBodies;
+		this.me = me;
+		target = eye.target;
 	}
 	
 	public List<CelestialBody> getFarSight(){

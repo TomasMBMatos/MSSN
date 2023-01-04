@@ -1,19 +1,18 @@
 package ca;
 import processing.core.PApplet;
-import processing.sound.SoundFile;
+import processing.core.PVector;
+import tools.CustomRandomGenerator;
 import tools.SubPlot;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class CellularAutomata {
-	private final int nrows;
-	private final int ncols;
-	private final int nstates;
+	protected final int nrows;
+	protected final int ncols;
+	protected final int nstates;
 	private final int radius;
-	private final Cell[][] cells;
-	private final int[] colors;
+	protected final Cell[][] cells;
+	private int[] colors;
 	protected final float cellwidth,cellheight;
 	private PApplet p = new PApplet();
 	protected float xmin, ymin;
@@ -44,16 +43,20 @@ public class CellularAutomata {
 	}
 	
 	public void setStateColors(PApplet p) {
-		colors[0]=p.color(0);
-		for(int i=1;i<colors.length;i++) {
+		//colors[0]=p.color(255);
+		for(int i=0;i<colors.length;i++) {
 			colors[i]=p.color(p.random(255),p.random(255),p.random(255));
 		}
+	}
+
+	public void setStateColors(int[] colors) {
+		this.colors = colors;
 	}
 	public int[] getStateColors() {
 		return colors;
 	}
 	
-	private void createCells() {
+	protected void createCells() {
 		for(int i=0;i<ncols;i++) {
 			for(int j=0;j<nrows;j++) {
 				cells[i][j]=new Cell(this,i,j);
@@ -67,23 +70,33 @@ public class CellularAutomata {
 			for(int j=0;j<nrows;j++) {
 				cells[i][j].setState((int) p.random(0,2));
 				if(cells[i][j].getState()!=0) cells[i][j].setState((int) p.random(1,nstates));
-				
+
 			}
 		}
 	}
 	public void initRandomMajority() {
 		for(int i=0;i<ncols;i++) {
 			for(int j=0;j<nrows;j++) {
-				cells[i][j].setState((int) p.random(0,nstates));
-				
-				
+				cells[i][j].setState((int) p.random(nstates));
 			}
 		}
 	}
-	public void init() {
-		
+
+	public void initRandomCustom(double[] pmf) {
+		CustomRandomGenerator crg = new CustomRandomGenerator(pmf);
+		for(int i=0; i<ncols; i++) {
+			for(int j=0; j<nrows; j++) {
+				cells[i][j].setState(crg.getRandomClass());
+			}
+		}
 	}
 
+	public PVector getCenterCell(int row, int col) {
+		float x = (col +0.5f) * cellwidth;
+		float y = (row +0.5f) * cellheight;
+		double[] w = plt.getWorldCoord(x, y);
+		return new PVector((float) w[0], (float) w[1]);
+	}
 	public Cell world2Cell(double x, double y) {
 		float[] xy = plt.getPixelCoord(x, y);
 		return pixel2cell(xy[0], xy[1]);
@@ -98,7 +111,7 @@ public class CellularAutomata {
 		return cells[col][row];
 	}
 	
-	private void setMooreCells() {
+	protected void setMooreCells() {
 		int nn=(int)Math.pow(2*radius+1, 2);
 		for(int i=0;i<nrows;i++) {
 			for(int j=0;j<ncols;j++) {
@@ -129,7 +142,7 @@ public class CellularAutomata {
 		for(int i=0;i<nrows;i++) {
 			for(int j=0;j<ncols;j++) {
 				Cell currentCell = cells[j][i];
-				Cell[] neigh = currentCell.getCells();
+				Cell[] neigh = currentCell.getNeighbours();
 				int aliveNeigh = 0;
 				HashMap<Integer, Integer> countmap = new HashMap<Integer, Integer>();
 				int major=0;
@@ -198,7 +211,7 @@ public class CellularAutomata {
 		for(int i=0;i<nrows;i++) {
 			for(int j=0;j<ncols;j++) {
 				Cell currentCell = cells[j][i];
-				Cell[] neigh = currentCell.getCells();
+				Cell[] neigh = currentCell.getNeighbours();
 				HashMap<Integer, Integer> countmap = new HashMap<Integer, Integer>();
 				int major=0;
 				int times=0;

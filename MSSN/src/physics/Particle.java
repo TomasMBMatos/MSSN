@@ -12,8 +12,9 @@ public class Particle extends Mover {
 	private float timer;
 	
 	protected Particle(PVector pos, PVector vel, float radius,int color, float lifespan) {
-		super(pos, vel, 0f, radius);
+		super(pos, vel, 0f);
 		this.color = color;
+		this.radius = radius;
 		this.lifespan = lifespan;
 		timer = 0;
 	}

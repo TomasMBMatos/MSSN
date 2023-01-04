@@ -12,8 +12,13 @@ public class CelestialBody extends Mover {
 	PImage img;
 
 	public CelestialBody(PVector pos, PVector vel, float mass, float radius, int color) {
-		super(pos, vel, mass, radius);
+		super(pos, vel, mass);
 		this.color = color;
+		this.radius = radius;
+	}
+
+	public CelestialBody(PVector pos) {
+		super(pos, new PVector(), 0f);
 	}
 
 	public PVector attraction(Mover m) {

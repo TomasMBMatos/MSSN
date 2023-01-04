@@ -10,11 +10,10 @@ public abstract class Mover {
 	protected float mass;
 	protected float radius;
 
-	protected Mover(PVector pos, PVector vel, float mass, float radius) {
+	protected Mover(PVector pos, PVector vel, float mass) {
 		this.pos = pos.copy();
 		this.vel = vel;
 		this.mass = mass;
-		this.radius = radius;
 		acc = new PVector();
 	}
 
