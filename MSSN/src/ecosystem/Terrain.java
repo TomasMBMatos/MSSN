@@ -3,14 +3,18 @@ package ecosystem;
 import ca.MajorityCA;
 import physics.CelestialBody;
 import processing.core.PApplet;
+import processing.core.PVector;
 import tools.SubPlot;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static ecosystem.WorldConstants.*;
+import static ecosystem.WorldConstants.PatchType.*;
 
 public class Terrain extends MajorityCA {
+    PVector cavePos;
+
     public Terrain(PApplet p, SubPlot plt) {
         super(p, plt, NCOLS, NROWS, NSTATES, 1);
     }
@@ -47,4 +51,22 @@ public class Terrain extends MajorityCA {
             }
         }
     }
+
+    public void createRatCave(PApplet p) {
+        int rndX = (int) p.random(ncols);
+        int rndY = (int) p.random(nrows);
+
+        if(cells[rndX][rndY].getState() == EMPTY.ordinal()) {
+            cells[rndX][rndY].setState(BASE.ordinal());
+            PVector array = getCenterCell(rndX, rndY);
+            setCavePos(array);
+            
+        }
+    }
+
+    public void setCavePos(PVector cavePos) {
+        this.cavePos = cavePos;
+    }
+
+    public PVector getCavePos() { return cavePos; }
 }

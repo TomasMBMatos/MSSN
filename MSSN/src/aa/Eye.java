@@ -62,6 +62,10 @@ public class Eye {
 		return inSight(t,me.dna.visionSafeDistance, (float) Math.PI);	
 	}
 
+	public void setTarget(CelestialBody target) {
+		this.target = target;
+	}
+
 	public void display(PApplet p, SubPlot plt) {
 		p.pushStyle();
 		p.pushMatrix();

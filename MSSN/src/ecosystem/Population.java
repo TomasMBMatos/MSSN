@@ -2,6 +2,7 @@ package ecosystem;
 
 import aa.AvoidObstacle;
 import aa.Eye;
+import aa.Pursuit;
 import aa.Wander;
 import physics.CelestialBody;
 import processing.core.*;
@@ -12,6 +13,10 @@ import static ecosystem.WorldConstants.*;
 
 public class Population {
     private List<Animal> allAnimals;
+    private List<Animal> preys;
+    private List<Animal> predators;
+
+    private boolean zeroPrey;
     private double[] window;
     private boolean mutate = true;
 
@@ -20,6 +25,8 @@ public class Population {
         allAnimals = new ArrayList<>();
 
         List<CelestialBody> obstacles = terrain.getObstacles();
+
+
 
         for(int i=0; i<INI_PREY_POPULATION; i++) {
             PVector pos = new PVector(p.random((float) window[0], (float) window[1]),
@@ -35,10 +42,59 @@ public class Population {
             a.setEye(eye);
             allAnimals.add(a);
         }
+
+    }
+
+    public void createPreyPopulation(PApplet p, SubPlot plt, Terrain terrain, List<CelestialBody> obstacles) {
+        for(int i=0; i<INI_PREY_POPULATION; i++) {
+            PVector pos = terrain.getCavePos();
+
+            int color = p.color(PREY_COLOR[0], PREY_COLOR[1], PREY_COLOR[2]);
+
+            Animal a = new Rat(pos, PREY_MASS, PREY_SIZE, color, p, plt);
+            a.addBehavior(new Wander(1));
+            a.addBehavior(new AvoidObstacle(10));
+            Eye eye = new Eye(a, obstacles);
+            a.setEye(eye);
+
+            preys.add(a);
+        }
+    }
+
+    public void createPredatorPopulation(PApplet p, SubPlot plt, Terrain terrain, List<CelestialBody> obstacles, List<Animal> preys) {
+        for(int i=0; i<INI_PREY_POPULATION; i++) {
+            PVector pos = new PVector(p.random((float) window[0], (float) window[1]),
+                                        p.random((float)window[2], (float)window[3]));
+
+            Patch patch = (Patch) terrain.world2Cell(pos.x, pos.y);
+            if(patch.getState() == PatchType.OBSTACLE.ordinal()) {
+                i--;
+                continue;
+            }
+
+            int color = p.color(PREDATOR_COLOR[0],PREDATOR_COLOR[1],PREDATOR_COLOR[2]);
+
+            Snake a = new Snake(pos, PREDATOR_MASS, PREDATOR_SIZE, color, p, plt, preys);
+
+            a.addBehavior(new Pursuit(3));
+            a.addBehavior(new AvoidObstacle(15));
+
+            Eye eyePredator = new Eye(a, obstacles);
+            int nPrey = a.getNearPrey(preys);
+            eyePredator.setTarget(preys.get(nPrey));
+            a.setEye(eyePredator);
+            predators.add(a);
+        }
     }
 
     public void update(float dt, Terrain terrain) {
         move(terrain, dt);
+        if(preys.size() > 1) {
+            for(int i=0; i<predators.size();i++) {
+                int nPrey = ((Snake) predators.get(i)).getNearPrey(preys);
+                predators.get(i).getEye().setTarget(preys.get(nPrey));
+            }
+        }
         eat(terrain);
         energy_consumption(dt, terrain);
         reproduce(mutate);

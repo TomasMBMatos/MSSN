@@ -95,7 +95,7 @@ public class TestEcosystemApp implements IProcessingApp2 {
 
     private int[] getColors(PApplet p) {
         int[] colors = new int[NSTATES];
-        for(int i=0;i<NSTATES;i++)
+        for(int i=0;i<NSTATES-1;i++)
             colors[i] = p.color(TERRAIN_COLORS[i][0],
                     TERRAIN_COLORS[i][1],
                     TERRAIN_COLORS[i][2]);
