@@ -5,18 +5,21 @@ import java.util.Random;
 import java.util.Scanner;
 
 import aa.BoidApp;
-import aa.FlockLeaderApp;
-import aa.FlockTestApp;
 import aa.ReynoldsTestApp;
+import aa.SpaceWarApp;
 import ca.TestCA;
+import ca.TestCAFP;
 import ca.TestMajorityCA;
 import dla.DLA;
 import ecosystem.TestEcosystemApp;
-import ecosystem.TestObstacles;
+import ecosystem.TestObstaclesApp;
 import ecosystem.TestTerrainApp;
+import fractals.ChaosGame1App;
+import fractals.ChaosGame2App;
 import fractals.ForestApp;
-import fractals.LSystemApp;
+import fractals.LSystem2App;
 import fractals.MandelbrotApp;
+import fractals.MandelbrotSet;
 import gof.GoF;
 import maj.Majority;
 import physics.ControlGUIApp;
@@ -28,7 +31,7 @@ import processing.core.PImage;
 
 public class ProcessingSetup extends PApplet{
 
-		public static IProcessingApp2 app;
+		public static IProcessingApp app;
 		private int lastUpdate;
 		PImage img;
 		
@@ -43,20 +46,20 @@ public class ProcessingSetup extends PApplet{
 	public void setup(){
 		app.setup(this);
 		lastUpdate=millis();
+	
+	}
+	public void keyPressed() {
+		app.keyPressed(this);
+		
 	}
 	public void mousePressed() {
 		app.mousePressed(this);
 	}
+	
 	public void mouseReleased() {
 		app.mouseReleased(this);
 	}
-	public void mouseDragged() {
-		app.mouseDragged(this);
-	}
-	public void keyPressed() {
-		app.keyPressed(this);
-	}
-
+	
 	@Override
 	public void draw(){
 	
@@ -68,10 +71,32 @@ public class ProcessingSetup extends PApplet{
 	}
 	
 	public static void main(String[] args) {
+		
+		//app = new TestObstaclesApp();
 		app = new TestEcosystemApp();
-
+		//app = new TestTerrainApp();
+		//app = new TestMajorityCA();
+		//app = new TestCAFP();
+		/* ************** 3rd Project Code Here ***********
+		//app = new LSystem2App();
+		//app = new LSystemApp();
+		//app = new ForestApp();
+		//app = new MandelbrotApp();
+		//app = new ChaosGame1App();
+		//app = new ChaosGame2App();
+		
+		*/
+		/** ************** 2nd Project Code Here ***********
+		//app = new ReynoldsTestApp();
+		//app = new BoidApp();
+		//app = new SolarSystemApp();
+		//app = new SpaceWarApp();
+		 * 
+		 * */
+		
+	
 		/**
-		 // ************** 1 Work Code Here ***********
+		 // ************** 1st Project Code Here ***********
 		Scanner sc= new Scanner(System.in);    //System.in is a standard input stream  
 		
 		System.out.println("Select App:");

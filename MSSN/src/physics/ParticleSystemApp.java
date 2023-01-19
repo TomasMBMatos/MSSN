@@ -48,12 +48,24 @@ public class ParticleSystemApp implements IProcessingApp{
 		double[] ww = plt.getWorldCoord(p.mouseX, p.mouseY);
 		
 		int color= p.color(p.random(255),p.random(255),p.random(255));
-		float vx=p.random(4,10);
-		float vy=p.random(4,10);
+		float vx=p.random(10,15);
+		float vy=p.random(-2,-5);
 		float lifespan = p.random(1,3);
 		
 		ParticleSystem ps = new ParticleSystem(new PVector((float)ww[0],(float)ww[1]), new PVector(),1f,0.2f,color,lifespan, new PVector(vx,vy));
 		pss.add(ps);
+		
+	}
+
+	@Override
+	public void mouseReleased(PApplet parent) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseDragged(PApplet parent) {
+		// TODO Auto-generated method stub
 		
 	}
 

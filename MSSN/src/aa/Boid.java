@@ -10,7 +10,7 @@ import processing.core.PShape;
 import processing.core.PVector;
 import tools.SubPlot;
 
-public class Boid extends CelestialBody {
+public class Boid extends Body2 {
 	
 	private SubPlot plt;
 	private PShape shape;
@@ -19,13 +19,20 @@ public class Boid extends CelestialBody {
 	protected List<Behavior> behaviors;
 	protected float phiWander;
 	private double[] window;
+	
 	private float sumWeights;
-
 	private float lifeTimer;
 	private boolean alive = false;
-
 	
 	
+	protected Boid(PVector pos,PVector vel,float mass,float radius, int color,PApplet p, SubPlot plt) {
+		super(pos, vel, mass, radius, color);
+		behaviors = new ArrayList<Behavior>();
+		this.plt=plt;
+		window = plt.getWindow();
+		dna = new DNA();
+		setShape(p,plt);
+	}
 	protected Boid(PVector pos,float mass,float radius, int color,PApplet p, SubPlot plt) {
 		super(pos, new PVector(), mass, radius, color);
 		behaviors = new ArrayList<Behavior>();
@@ -34,25 +41,6 @@ public class Boid extends CelestialBody {
 		dna = new DNA();
 		setShape(p,plt);
 	}
-
-	public void mutateBehaviors() {
-		for(Behavior behavior : behaviors) {
-			if(behavior instanceof AvoidObstacle) {
-				behavior.weight += DNA.random(.5f, .5f);
-				behavior.weight = Math.max(0, behavior.weight);
-			}
-		}
-		updateSumWeights();
-	}
-
-	public List<Behavior> getBehaviors() {
-		return behaviors;
-	}
-
-	public DNA getDNA() {
-		return dna;
-	}
-	
 	public void setEye(Eye eye) {
 		this.eye = eye;
 		
@@ -64,12 +52,13 @@ public class Boid extends CelestialBody {
 	public float getRadius() {
 		return radius;
 	}
+	
 	public void setShape(PApplet p, SubPlot plt, float radius, int color) {
 		this.radius = radius;
 		this.color = color;
 		setShape(p, plt);
 	}
-
+	
 	public void setShape(PApplet p, SubPlot plt) {
 		float[] rr = plt.getVectorCoord(radius,radius);
 		shape = p.createShape();
@@ -83,7 +72,6 @@ public class Boid extends CelestialBody {
 		
 		shape.endShape(PConstants.CLOSE);
 	}
-
 	public float getLifeTimer() {
 		return lifeTimer;
 	}
@@ -91,27 +79,39 @@ public class Boid extends CelestialBody {
 	public void setAlive() {
 		this.alive = !alive;
 	}
+	
 	public void setLifeTimer(float time) {
 		this.lifeTimer = time;
 	}
+	
 	private void updateSumWeights() {
 		sumWeights = 0;
 		for(Behavior behavior: behaviors) {
 			sumWeights += behavior.getWeight();
 		}
 	}
-
-	public void addBehavior(Behavior behavior) {
+	public void addBehavior2(Behavior behavior) {
 		behaviors.add(behavior);
 		updateSumWeights();
 	}
-	public void removeBehavior(Behavior behavior) {	
+	
+	public void removeBehavior2(Behavior behavior) {	
 		if(behaviors.contains(behavior))
 			behaviors.remove(behavior);
 		updateSumWeights();
 	}
 	
+	public void addBehavior(Behavior behavior) {
+		behaviors.add(behavior);
+	}
+	
+	public void removeBehavior(Behavior behavior) {	
+		if(behaviors.contains(behavior))
+		behaviors.remove(behavior);
+	}
+	
 	public void applyBehavior(int i, float dt) {
+		
 		if(eye != null) eye.look();
 		Behavior behavior = behaviors.get(i);
 		PVector vd = behavior.getDesiredVelocity(this);
@@ -120,6 +120,16 @@ public class Boid extends CelestialBody {
 	}
 	
 	public void applyBehaviors(float dt) {
+		if(eye != null) eye.look();
+		PVector vd = new PVector();
+		for(Behavior behavior : behaviors) {
+			PVector vdd = behavior.getDesiredVelocity(this);
+			vdd.mult(behavior.getWeight());
+			vd.add(vdd);
+		}
+		move(dt,vd);
+	}
+	public void applyBehaviors2(float dt) {
 		if(eye != null) eye.look();
 		PVector vd = new PVector();
 		for(Behavior behavior : behaviors) {
@@ -148,18 +158,38 @@ public class Boid extends CelestialBody {
 			System.out.println(lifeTimer);
 		}
 	}
+	public boolean moveShot(float dt, PVector vd) {
+		vd.normalize().mult(dna.maxSpeed);
+		PVector fs = PVector.sub(vd, vel);
+		applyForce(fs.limit(dna.maxForce));
+		super.move(dt);
+		if(pos.x < window[0])
+			return true;
+		if(pos.x >= window[1])
+			return true;
+		if(pos.y < window[2])
+			return true;
+		if(pos.y >= window[3])
+			return true;
+		return false;
+	}
 	
 	public void display(PApplet p, SubPlot plt) {
 		p.pushMatrix();
 		float[] pp = plt.getPixelCoord(pos.x,pos.y);
-		float[] vv = plt.getVectorCoord(vel.x, vel.y);
-		PVector vaux = new PVector(vv[0], vv[1]);
 		p.translate(pp[0], pp[1]);
-		p.rotate(-vaux.heading());
+		p.rotate(-vel.heading());
 		p.shape(shape);
 		p.popMatrix();
 	}
-
+	public void display(PApplet p, SubPlot plt, int color) {
+		p.pushStyle();
+		float[] pp = plt.getPixelCoord(pos.x, pos.y);
+		float[] r = plt.getVectorCoord(radius, radius);
+		p.noStroke();
+		p.fill(color);
+		p.circle(pp[0], pp[1], r[0]);
+	}
 	public void displayMoveVector(PApplet p, SubPlot plt) {
 		p.pushStyle();
 		p.pushMatrix();
@@ -174,4 +204,5 @@ public class Boid extends CelestialBody {
 		p.popMatrix();
 		p.popStyle();
 	}
+
 }

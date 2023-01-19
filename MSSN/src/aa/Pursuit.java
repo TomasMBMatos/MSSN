@@ -15,5 +15,7 @@ public class Pursuit extends Behavior {
 		PVector d = bodyTarget.getVel().mult(me.dna.deltaTPursuit);
 		PVector target = PVector.add(bodyTarget.getPos(), d);
 		return PVector.sub(target, me.getPos());
+		
 	}
+
 }

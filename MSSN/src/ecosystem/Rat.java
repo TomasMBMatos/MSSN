@@ -14,8 +14,6 @@ public class Rat extends Animal {
 
     protected Rat(PVector pos, float mass, float radius, int color, PApplet p, SubPlot plt) {
         super(pos, mass, radius, color, p, plt);
-        this.p = p;
-        this.plt = plt;
         energy = INI_PREY_ENERGY;
         // image_rat = p.loadImage("...");
         // image_rat.resize(.., ..);
@@ -23,8 +21,6 @@ public class Rat extends Animal {
 
     public Rat(Rat prey, boolean mutate, PApplet p, SubPlot plt) {
         super(prey, mutate, p, plt);
-        this.p = p;
-        this.plt = plt;
         energy = INI_PREY_ENERGY;
         // image_rat = p.loadImage("..."):
         // image_rat.resize(.., ..);

@@ -1,28 +1,32 @@
 package aa;
 
-import physics.CelestialBody;
 import processing.core.PVector;
 
-public class AvoidObstacle extends Behavior {
-    public AvoidObstacle(float weight) {
-        super(weight);
-    }
+public class AvoidObstacle  extends Behavior2 {
 
-    @Override
-    public PVector getDesiredVelocity(Boid me) {
-        float s = hasObstacle(me);
-        if(s == 0) return me.getVel().copy();
-        PVector vd = new PVector(me.getVel().y, -me.getVel().x);
-        if(s > 0) vd.mult(-1);
-        return vd;
-    }
+	public AvoidObstacle(float weight) {
+		super(weight);
+	}
 
-    private float hasObstacle(Boid me) {
-        for(CelestialBody body : me.eye.getFarSight()) {
-            PVector r = PVector.sub(body.getPos(), me.getPos());
-            PVector vd = new PVector(me.getVel().y, -me.getVel().x);
-            return PVector.dot(vd, r);
-        }
-        return 0;
-    }
+
+	public PVector getDesiredVelocity(Boid2 me) {
+		float s = hasObstacle(me);
+		if(s==0)return me.getVel().copy();
+		PVector vd = new PVector(me.getVel().y,-me.getVel().x);
+		if(s>0)vd.mult(-1);
+		return vd;
+		
+	}
+	private float hasObstacle(Boid2 me) {
+		for(Body2 body : me.eye.getFarSight() ) {
+			PVector r = PVector.sub(body.getPos(),me.getPos());
+			PVector vd = new PVector(me.getVel().y,-me.getVel().x);
+			return PVector.dot(vd, r);
+			
+		}
+		return 0;
+		
+	}
+	
+
 }

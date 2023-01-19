@@ -12,11 +12,14 @@ public class CelestialBody extends Mover {
 	PImage img;
 
 	public CelestialBody(PVector pos, PVector vel, float mass, float radius, int color) {
-		super(pos, vel, mass);
+		super(pos, vel, mass, radius);
 		this.color = color;
-		this.radius = radius;
 	}
 
+	public CelestialBody(PVector pos, float mass, float radius, int color2) {
+		super(pos, mass, radius);
+		this.color = color;
+	}
 	public CelestialBody(PVector pos) {
 		super(pos, new PVector(), 0f);
 	}
@@ -37,4 +40,14 @@ public class CelestialBody extends Mover {
 		p.image(img, pp[0] - r[0] / 2, pp[1] - r[0] / 2);
 		p.popStyle();
 	}
+	public void display(PApplet p, SubPlot plt) {
+		p.pushStyle();
+		float[] pp = plt.getPixelCoord(pos.x, pos.y);
+		float[] r = plt.getVectorCoord(radius, radius);
+		
+		p.noStroke();
+		p.fill(color);
+		p.circle(pp[0], pp[1], r[0]);
+	}
+
 }

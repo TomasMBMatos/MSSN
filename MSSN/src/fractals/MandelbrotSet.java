@@ -1,7 +1,7 @@
 package fractals;
 
 import processing.core.PApplet;
-import tools.Complex;
+import fractals.Complex;
 import tools.SubPlot;
 
 public class MandelbrotSet {

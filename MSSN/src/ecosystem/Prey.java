@@ -15,20 +15,22 @@ public class Prey extends Animal {
         this.plt = plt;
         energy = INI_PREY_ENERGY;
     }
-
-    public Prey(Prey prey, boolean mutate, PApplet p, SubPlot plt) {
-        super(prey,mutate, p, plt);
+    
+    public Prey(Prey prey,boolean mutate ,PApplet p, SubPlot plt) {
+        super(prey, mutate,p, plt);
         this.p = p;
         this.plt = plt;
         energy = INI_PREY_ENERGY;
     }
+
     @Override
     public Animal reproduce(boolean mutate) {
         Animal child = null;
         if(energy > PREY_ENERGY_TO_REPRODUCE) {
             energy -= INI_PREY_ENERGY;
-            child = new Prey(this, mutate, p, plt);
-            if(mutate) child.mutateBehaviors();
+            child = new Prey(this, mutate,p, plt);
+            if(mutate)child.mutateBehaviors();
+          
         }
         return child;
     }

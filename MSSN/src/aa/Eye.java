@@ -3,32 +3,33 @@ package aa;
 import java.util.ArrayList;
 import java.util.List;
 
+import ecosystem.Animal;
 import physics.CelestialBody;
 import processing.core.PApplet;
 import processing.core.PVector;
 import tools.SubPlot;
 
 public class Eye {
-	private List<CelestialBody> allTrackingBodies;
-	private List<CelestialBody> farSight;
-	private List<CelestialBody> nearSight;
+	protected List<CelestialBody> allTrackingBodies;
+	protected List<CelestialBody> farSight;
+	protected List<CelestialBody> nearSight;
 	private Boid me;
 	protected CelestialBody target;
 	
 	public Eye(Boid me,List<CelestialBody> allTrackingBodies) {
 		this.me = me;
 		this.allTrackingBodies = allTrackingBodies;
-		if(allTrackingBodies.size() > 0) {
-			target = allTrackingBodies.get(0);
-		}
+		if(allTrackingBodies.size()>0) target=allTrackingBodies.get(0);
+		target = allTrackingBodies.get(0);
 	}
-
+	
 	public Eye(Boid me, Eye eye) {
+		
 		allTrackingBodies = eye.allTrackingBodies;
 		this.me = me;
 		target = eye.target;
 	}
-	
+
 	public List<CelestialBody> getFarSight(){
 		return farSight;
 	}
@@ -61,11 +62,6 @@ public class Eye {
 	private boolean nearSight(PVector t) {
 		return inSight(t,me.dna.visionSafeDistance, (float) Math.PI);	
 	}
-
-	public void setTarget(CelestialBody target) {
-		this.target = target;
-	}
-
 	public void display(PApplet p, SubPlot plt) {
 		p.pushStyle();
 		p.pushMatrix();

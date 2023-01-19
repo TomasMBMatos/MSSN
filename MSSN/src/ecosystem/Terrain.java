@@ -5,68 +5,79 @@ import physics.CelestialBody;
 import processing.core.PApplet;
 import processing.core.PVector;
 import tools.SubPlot;
+import static ecosystem.WorldConstants.PatchType.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import aa.Body;
+import aa.Body2;
+
 import static ecosystem.WorldConstants.*;
-import static ecosystem.WorldConstants.PatchType.*;
 
 public class Terrain extends MajorityCA {
-    PVector cavePos;
+	PVector cavePos;
 
-    public Terrain(PApplet p, SubPlot plt) {
-        super(p, plt, NCOLS, NROWS, NSTATES, 1);
-    }
-    @Override
-    protected void createCells() {
-        int minRT = (int) (REGENERATION_TIME[0]*1000);
-        int maxRT = (int) (REGENERATION_TIME[1]*1000);
-        for(int i = 0; i < ncols; i++) {
-            for(int j = 0; j < nrows; j++) {
-                int timeToGrow = (int) (minRT+(maxRT-minRT)*Math.random());
-                cells[i][j] = new Patch(this, i, j, timeToGrow);
-            }
-        }
-        setMooreCells();
-    }
+	public Terrain(PApplet p, SubPlot plt) {
+		super(p, plt, NCOLS, NROWS, NSTATES, 1);
+	}
 
-    public List<CelestialBody> getObstacles() {
-        List<CelestialBody> bodies = new ArrayList<>();
-        for(int i=0; i<ncols;i++) {
-            for(int j=0;j<nrows;j++) {
-                if(cells[i][j].getState() == PatchType.OBSTACLE.ordinal()) {
-                    CelestialBody b = new CelestialBody(this.getCenterCell(i,j));
-                    bodies.add(b);
-                }
-            }
-        }
-        return bodies;
-    }
+	public void createRatCave(PApplet p) {
+		int rndX = (int) p.random(ncols);
+		int rndY = (int) p.random(nrows);
+		boolean spawn = false;
+		while (!spawn) {
+			if (cells[rndX][rndY].getState() == EMPTY.ordinal()) {
+				spawn = true;
+				cells[rndX][rndY].setState(BASE.ordinal());
+				PVector array = getCenterCell(rndX, rndY);
+				setCavePos(array);
+			}
+			rndX = (int) p.random(ncols);
+			rndY = (int) p.random(nrows);
+		}
+	}
 
-    public void regenerate() {
-        for(int i=0; i<ncols; i++) {
-            for(int j=0; j<nrows; j++) {
-                ((Patch) cells[i][j]).regenerate();
-            }
-        }
-    }
+	public void setCavePos(PVector cavePos) {
+		this.cavePos = cavePos;
+		System.out.print(this.cavePos + " dsadasda");
+	}
 
-    public void createRatCave(PApplet p) {
-        int rndX = (int) p.random(ncols);
-        int rndY = (int) p.random(nrows);
+	public PVector getCavePos() {
+		return cavePos;
+	}
 
-        if(cells[rndX][rndY].getState() == EMPTY.ordinal()) {
-            cells[rndX][rndY].setState(BASE.ordinal());
-            PVector array = getCenterCell(rndX, rndY);
-            setCavePos(array);
-            
-        }
-    }
+	@Override
+	protected void createCells() {
+		int minRT = (int) (REGENERATION_TIME[0] * 1000);
+		int maxRT = (int) (REGENERATION_TIME[1] * 1000);
+		for (int i = 0; i < ncols; i++) {
+			for (int j = 0; j < nrows; j++) {
+				int timeToGrow = (int) (minRT + (maxRT - minRT) * Math.random());
+				cells[i][j] = new Patch(this, i, j, timeToGrow);
+			}
+		}
+		setMooreCells();
+	}
 
-    public void setCavePos(PVector cavePos) {
-        this.cavePos = cavePos;
-    }
+	public List<Body2> getObstacles() {
+		List<Body2> bodies = new ArrayList<Body2>();
+		for (int i = 0; i < nrows; i++) {
+			for (int j = 0; j < ncols; j++) {
+				if (cells[j][i].getState() == WorldConstants.PatchType.OBSTACLE.ordinal()) {
+					Body2 b = new Body2(this.getCenterCell(i, j));
+					bodies.add(b);
+				}
+			}
+		}
+		return bodies;
+	}
 
-    public PVector getCavePos() { return cavePos; }
+	public void regenerate() {
+		for (int i = 0; i < ncols; i++) {
+			for (int j = 0; j < nrows; j++) {
+				((Patch) cells[i][j]).regenerate();
+			}
+		}
+	}
 }

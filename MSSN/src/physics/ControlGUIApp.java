@@ -49,4 +49,16 @@ public class ControlGUIApp implements IProcessingApp {
 
 	}
 
+	@Override
+	public void mouseReleased(PApplet parent) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseDragged(PApplet parent) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

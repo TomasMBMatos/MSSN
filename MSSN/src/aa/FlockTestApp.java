@@ -37,4 +37,16 @@ public class FlockTestApp implements IProcessingApp {
     public void mousePressed(PApplet p) {
 
     }
+
+	@Override
+	public void mouseReleased(PApplet parent) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseDragged(PApplet parent) {
+		// TODO Auto-generated method stub
+		
+	}
 }

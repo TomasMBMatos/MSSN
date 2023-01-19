@@ -23,8 +23,8 @@ public class FlockLeaderApp implements IProcessingApp {
     public void setup(PApplet p) {
         target = new Body(new PVector(), new PVector(), 1f, 0.3f, p.color(0));
         plt = new SubPlot(window, viewport, p.width, p.height);
-        flockLeader = new Boid(new PVector(), 0.03f, 0.5f, p.color(255, 0, 0), p, plt);
-        flockLeader.addBehavior(new Seek(1f));
+        flockLeader = new Boid(new PVector(),new PVector(), 0.03f, 0.5f, p.color(255, 0, 0), p, plt);
+        flockLeader.addBehavior2(new Seek(1f));
         List<CelestialBody> track = new ArrayList<>();
         track.add(target);
         flockLeader.setEye(new Eye(flockLeader, track));
@@ -64,4 +64,16 @@ public class FlockLeaderApp implements IProcessingApp {
             toAdd = new PVector(1,0);
 
     }
+
+	@Override
+	public void mouseReleased(PApplet parent) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseDragged(PApplet parent) {
+		// TODO Auto-generated method stub
+		
+	}
 }

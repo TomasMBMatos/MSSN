@@ -4,7 +4,7 @@ import processing.core.PVector;
 
 public abstract class Behavior implements IBehaviour {
 
-	protected float weight;
+	private float weight;
 	
 	public Behavior(float weight) {
 		this.weight = weight;

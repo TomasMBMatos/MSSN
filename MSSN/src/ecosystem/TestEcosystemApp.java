@@ -1,13 +1,13 @@
 package ecosystem;
 
 import processing.core.PApplet;
-import setup.IProcessingApp2;
+import setup.IProcessingApp;
 import tools.SubPlot;
 import tools.TimeGraph;
 
 import static ecosystem.WorldConstants.*;
 
-public class TestEcosystemApp implements IProcessingApp2 {
+public class TestEcosystemApp implements IProcessingApp {
 
     private float timeDuration = 60;
     private float refPopulation = 720;
@@ -49,6 +49,10 @@ public class TestEcosystemApp implements IProcessingApp2 {
         population = new Population(p, plt, terrain);
         timer = 0;
         updateGraphTime = timer + intervalUpdate;
+        terrain.createRatCave(p);
+        population.createPreyPopulation(p, plt, terrain, terrain.getObstacles());
+        population.createPredatorPopulation(p, plt, terrain, terrain.getObstacles(), population.getPreys());
+       
     }
 
     @Override
@@ -56,11 +60,11 @@ public class TestEcosystemApp implements IProcessingApp2 {
         timer += dt;
 
         terrain.regenerate();
+     
         population.update(dt, terrain);
 
         terrain.display(p);
         population.display(p, plt);
-
         if(timer > updateGraphTime) {
             System.out.println(String.format("Time = %d", (int) timer));
             System.out.println("numAnimals = " + population.getNumAnimals());
@@ -73,6 +77,8 @@ public class TestEcosystemApp implements IProcessingApp2 {
             tg2.plot(timer, population.getMeanMaxSpeed());
             tg3.plot(timer, population.getStdMaxSpeed());
             updateGraphTime = timer + intervalUpdate;
+            
+           
         }
     }
 
@@ -95,7 +101,7 @@ public class TestEcosystemApp implements IProcessingApp2 {
 
     private int[] getColors(PApplet p) {
         int[] colors = new int[NSTATES];
-        for(int i=0;i<NSTATES-1;i++)
+        for(int i=0;i<NSTATES-1	;i++)
             colors[i] = p.color(TERRAIN_COLORS[i][0],
                     TERRAIN_COLORS[i][1],
                     TERRAIN_COLORS[i][2]);

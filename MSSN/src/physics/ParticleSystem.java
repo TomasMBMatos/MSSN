@@ -15,8 +15,7 @@ public class ParticleSystem extends Mover {
 	
 
 	protected ParticleSystem(PVector pos, PVector vel, float mass, float radius,int particleColor,float lifetime, PVector particleSpeed) {
-		super(pos, vel, mass);
-		this.radius = radius;
+		super(pos, vel, mass, radius);
 		this.particleColor = particleColor;
 		this.lifetime = lifetime;
 		this.particles = new ArrayList<Particle>();
@@ -32,6 +31,9 @@ public class ParticleSystem extends Mover {
 			p.move(dt);
 			if(p.isDead()) particles.remove(i);
 		}
+	}
+	public void setColor(int color) {
+		this.particleColor=color;
 	}
 	
 	private void addParticle() {

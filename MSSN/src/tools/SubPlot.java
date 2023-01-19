@@ -79,7 +79,7 @@ public class SubPlot {
 
 	}
 
-	public float[] getVectorCoord(double[] dxdy) {
+	public float[] getDimInPixel(double[] dxdy) {
 		return getVectorCoord(dxdy[0], dxdy[1]);
 	}
 

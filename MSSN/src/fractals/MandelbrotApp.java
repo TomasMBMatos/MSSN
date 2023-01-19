@@ -2,10 +2,10 @@ package fractals;
 
 import processing.core.PApplet;
 
-import setup.IProcessingApp2;
+import setup.IProcessingApp;
 import tools.SubPlot;
 
-public class MandelbrotApp implements IProcessingApp2 {
+public class MandelbrotApp implements IProcessingApp {
 
     private double[] window = {-2,2,-2,2};
     private float[] viewport = {0,0,1,1};

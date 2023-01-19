@@ -6,7 +6,6 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import processing.sound.SoundFile;
 import setup.IProcessingApp;
-import tools.SubPlot;
 
 public class Majority implements IProcessingApp {
     private int rows = 150;
@@ -17,7 +16,6 @@ public class Majority implements IProcessingApp {
     private String survive = "";
     private String born = "";
     SoundFile moving;
-    private SubPlot plt;
     
     
 
@@ -31,7 +29,7 @@ public class Majority implements IProcessingApp {
     public void setup(PApplet p) {
        // SoundFile music=new SoundFile(p,"Undertale.mp3");
        // music.play();
-        ca = new CellularAutomata(p, plt, cols, rows, states, radius,survive,born);
+        ca = new CellularAutomata(p,cols, rows, states, radius,survive,born);
         ca.initRandomMajority();
         ca.display(p);
       
@@ -71,4 +69,14 @@ public class Majority implements IProcessingApp {
             ca.display(p);
         }
     }
+	@Override
+	public void mouseReleased(PApplet parent) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseDragged(PApplet parent) {
+		// TODO Auto-generated method stub
+		
+	}
 }

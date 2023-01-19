@@ -8,12 +8,26 @@ public abstract class Mover {
 	protected PVector vel;
 	protected PVector acc;
 	protected float mass;
-	protected float radius;
+	public float radius;
 
+	protected Mover(PVector pos, PVector vel, float mass, float radius) {
+		this.pos = pos.copy();
+		this.vel = vel;
+		this.mass = mass;
+		this.radius = radius;
+		acc = new PVector();
+	}
 	protected Mover(PVector pos, PVector vel, float mass) {
 		this.pos = pos.copy();
 		this.vel = vel;
 		this.mass = mass;
+		acc = new PVector();
+	}
+
+	public Mover(PVector pos2, float mass2, float radius2) {
+		this.pos = pos.copy();
+		this.mass = mass;
+		this.radius = radius;
 		acc = new PVector();
 	}
 
@@ -33,6 +47,14 @@ public abstract class Mover {
 
 	public PVector getPos() {
 		return pos;
+	}
+	
+	public void setMass(float mass) {
+		this.mass = mass;
+	}
+
+	public float getMass() {
+		return mass;
 	}
 
 	public void setVel(PVector vel) {

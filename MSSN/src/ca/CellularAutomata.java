@@ -1,62 +1,58 @@
 package ca;
 import processing.core.PApplet;
-import processing.core.PVector;
-import tools.CustomRandomGenerator;
-import tools.SubPlot;
+import processing.sound.SoundFile;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class CellularAutomata {
-	protected final int nrows;
-	protected final int ncols;
-	protected final int nstates;
+	private final int nrows;
+	private final int ncols;
+	protected int nstates;
 	private final int radius;
-	protected final Cell[][] cells;
-	private int[] colors;
-	protected final float cellwidth,cellheight;
+	private final Cell[][] cells;
+	private final int[] colors;
+	private final int cellwidth,cellheight;
 	private PApplet p = new PApplet();
-	protected float xmin, ymin;
-	private SubPlot plt;
 
 	private String survive;
 	private String born;
 	
 	
-	public CellularAutomata(PApplet p, SubPlot plt, int ncols, int nrows, int nstates, int radius, String survive, String born) {
+	public CellularAutomata( PApplet p,int ncols, int nrows, int nstates, int radius, String survive, String born) {
 		this.nrows=nrows;
 		this.ncols=ncols;
 		this.nstates=nstates;
 		this.radius=radius;
 		cells = new Cell[ncols][nrows];
 		colors = new int[nstates];
-		float[] bb = plt.getBoundingBox();
-		xmin = bb[0];
-		ymin = bb[1];
-		cellwidth=bb[2]/ncols;
-		cellheight=bb[3]/nrows;
-		this.plt = plt;
+		cellwidth=p.width/ncols;
+		cellheight=p.height/nrows;
 		this.survive=survive;
 		this.born=born;
 		createCells();
 		setStateColors(p);
 		
 	}
+	public int getCellWidth() {
+		return cellwidth;
+	}
+	public int getCellHeight() {
+		return cellheight;
+	}
 	
 	public void setStateColors(PApplet p) {
-		//colors[0]=p.color(255);
-		for(int i=0;i<colors.length;i++) {
+		colors[0]=p.color(0);
+		for(int i=1;i<colors.length;i++) {
 			colors[i]=p.color(p.random(255),p.random(255),p.random(255));
 		}
-	}
-
-	public void setStateColors(int[] colors) {
-		this.colors = colors;
 	}
 	public int[] getStateColors() {
 		return colors;
 	}
 	
-	protected void createCells() {
+	private void createCells() {
 		for(int i=0;i<ncols;i++) {
 			for(int j=0;j<nrows;j++) {
 				cells[i][j]=new Cell(this,i,j);
@@ -70,48 +66,31 @@ public class CellularAutomata {
 			for(int j=0;j<nrows;j++) {
 				cells[i][j].setState((int) p.random(0,2));
 				if(cells[i][j].getState()!=0) cells[i][j].setState((int) p.random(1,nstates));
-
+				
 			}
 		}
 	}
 	public void initRandomMajority() {
 		for(int i=0;i<ncols;i++) {
 			for(int j=0;j<nrows;j++) {
-				cells[i][j].setState((int) p.random(nstates));
+				cells[i][j].setState((int) p.random(0,nstates));
+				
+				
 			}
 		}
 	}
-
-	public void initRandomCustom(double[] pmf) {
-		CustomRandomGenerator crg = new CustomRandomGenerator(pmf);
-		for(int i=0; i<ncols; i++) {
-			for(int j=0; j<nrows; j++) {
-				cells[i][j].setState(crg.getRandomClass());
-			}
-		}
+	public void init() {
+		
 	}
-
-	public PVector getCenterCell(int row, int col) {
-		float x = (col +0.5f) * cellwidth;
-		float y = (row +0.5f) * cellheight;
-		double[] w = plt.getWorldCoord(x, y);
-		return new PVector((float) w[0], (float) w[1]);
-	}
-	public Cell world2Cell(double x, double y) {
-		float[] xy = plt.getPixelCoord(x, y);
-		return pixel2cell(xy[0], xy[1]);
-	}
-	public Cell pixel2cell(float x, float y) {
-		int row = (int) ((int)(y-ymin)/cellheight);
-		int col = (int) ((int)(x-xmin)/cellwidth);
+	public Cell pixel2cell(int x, int y) {
+		int row =y/cellheight;
+		int col =x/cellwidth;
 		if (row >= nrows) row = nrows - 1;
 		if (col >= ncols) col = ncols - 1;
-		if(row < 0) row = 0;
-		if(col < 0) row = 0;
 		return cells[col][row];
 	}
 	
-	protected void setMooreCells() {
+	private void setMooreCells() {
 		int nn=(int)Math.pow(2*radius+1, 2);
 		for(int i=0;i<nrows;i++) {
 			for(int j=0;j<ncols;j++) {
@@ -142,7 +121,7 @@ public class CellularAutomata {
 		for(int i=0;i<nrows;i++) {
 			for(int j=0;j<ncols;j++) {
 				Cell currentCell = cells[j][i];
-				Cell[] neigh = currentCell.getNeighbours();
+				Cell[] neigh = currentCell.getCells();
 				int aliveNeigh = 0;
 				HashMap<Integer, Integer> countmap = new HashMap<Integer, Integer>();
 				int major=0;
@@ -211,7 +190,7 @@ public class CellularAutomata {
 		for(int i=0;i<nrows;i++) {
 			for(int j=0;j<ncols;j++) {
 				Cell currentCell = cells[j][i];
-				Cell[] neigh = currentCell.getNeighbours();
+				Cell[] neigh = currentCell.getCells();
 				HashMap<Integer, Integer> countmap = new HashMap<Integer, Integer>();
 				int major=0;
 				int times=0;

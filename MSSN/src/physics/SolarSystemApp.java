@@ -1,5 +1,8 @@
 package physics;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
@@ -41,6 +44,9 @@ public class SolarSystemApp implements IProcessingApp {
 
 	private SubPlot plt;
 	private CelestialBody sun, earth, mercury, venus, mars, jupiter, saturn, uranus, neptune;
+	private List<ParticleSystem> pss;
+	private List<Wrapper> wrapper;
+	private List<ParticleSystem> remove = new ArrayList<ParticleSystem>();
 
 	private float speedUp = 60 * 60 * 24 * 60;
 	PImage img, sunImg, mercuryImg, venusImg, earthImg, marsImg, jupiterImg, saturnImg, uranusImg, neptuneImg;
@@ -49,6 +55,8 @@ public class SolarSystemApp implements IProcessingApp {
 	public void setup(PApplet p) {
 
 		plt = new SubPlot(window, viewport, p.width, p.height);
+		wrapper = new ArrayList<Wrapper>();
+		
 		sun = new CelestialBody(new PVector(), new PVector(), sunMass * 3, distEarthSun * 2, p.color(255, 128, 0));
 		earth = new CelestialBody(new PVector(0, distEarthSun * 3), new PVector(earthSpeed, 0), earthMass,
 				distEarthSun * 2, p.color(0, 180, 120));
@@ -77,54 +85,63 @@ public class SolarSystemApp implements IProcessingApp {
 		saturnImg = p.loadImage("saturn.png");
 		uranusImg = p.loadImage("uranus3.png");
 		neptuneImg = p.loadImage("neptune.png");
+		
+	
+		
+		pss= new ArrayList<ParticleSystem>();
+		wrapper.add(new Wrapper(sun,sunImg));
+		wrapper.add(new Wrapper(mercury,mercuryImg));
+		wrapper.add(new Wrapper(venus,venusImg));
+		wrapper.add(new Wrapper(earth,earthImg));
+		wrapper.add(new Wrapper(mars,marsImg));
+		wrapper.add(new Wrapper(jupiter,jupiterImg));
+		wrapper.add(new Wrapper(saturn,saturnImg));
+		wrapper.add(new Wrapper(uranus,uranusImg));
+		wrapper.add(new Wrapper(neptune,neptuneImg));
+		
 	}
 
 	@Override
 	public void draw(PApplet p, float dt) {
+		
 
 		p.background(img);
 
 		sun.display(p, plt, sunImg);
-
-		PVector f = sun.attraction(mercury);
-		mercury.applyForce(f);
-		mercury.move(dt * speedUp);
-		mercury.display(p, plt, mercuryImg);
-
-		f = sun.attraction(venus);
-		venus.applyForce(f);
-		venus.move(dt * speedUp);
-		venus.display(p, plt, venusImg);
-
-		f = sun.attraction(earth);
-		earth.applyForce(f);
-		earth.move(dt * speedUp);
-		earth.display(p, plt, earthImg);
-
-		f = sun.attraction(mars);
-		mars.applyForce(f);
-		mars.move(dt * speedUp);
-		mars.display(p, plt, marsImg);
-
-		f = sun.attraction(jupiter);
-		jupiter.applyForce(f);
-		jupiter.move(dt * speedUp);
-		jupiter.display(p, plt, jupiterImg);
-
-		f = sun.attraction(saturn);
-		saturn.applyForce(f);
-		saturn.move(dt * speedUp);
-		saturn.display(p, plt, saturnImg);
-
-		f = sun.attraction(uranus);
-		uranus.applyForce(f);
-		uranus.move(dt * speedUp);
-		uranus.display(p, plt, uranusImg);
-
-		f = sun.attraction(neptune);
-		neptune.applyForce(f);
-		neptune.move(dt * speedUp);
-		neptune.display(p, plt, neptuneImg);
+		
+		for (Wrapper wrapper : wrapper) {
+			 	if(wrapper.planet==sun) wrapper.planet.display(p,plt,wrapper.img);
+			 	else {
+			 		PVector f = sun.attraction(wrapper.planet);
+			 		wrapper.planet.applyForce(f);
+			 		wrapper.planet.move(dt * speedUp);
+			 		wrapper.planet.display(p, plt, wrapper.img);
+			 	}
+			 	
+		}
+		 
+		for(ParticleSystem ps:pss) {
+		
+		for (Wrapper wrapper : wrapper) {
+			if(wrapper.planet.getPos().dist(ps.getPos()) <= wrapper.planet.radius)
+		 		ps.setColor(p.color(200,0,0));
+			if(wrapper.planet.getPos().dist(ps.getPos()) <= 2*wrapper.planet.radius/3) 
+				ps.setColor(p.color(250,165,0));
+			if(wrapper.planet.getPos().dist(ps.getPos()) <= wrapper.planet.radius/3) 
+				remove.add(ps);
+			
+		 		
+		}
+		if(!remove.contains(ps)) {
+			ps.applyForce(new PVector(distEarthSun/2,0));
+			ps.move(dt);
+		}
+		ps.display(p, plt);
+		}
+		if(remove.size()>0) for(ParticleSystem pd:remove) {
+					pss.remove(pd);
+		}
+		
 
 	}
 
@@ -135,7 +152,27 @@ public class SolarSystemApp implements IProcessingApp {
 
 	@Override
 	public void mousePressed(PApplet p) {
+		double[] ww = plt.getWorldCoord(p.mouseX, p.mouseY);
+		
+		int color= p.color(150, 75, 0);
+		float vx=10;
+		float vy=distEarthSun;
+		float lifespan = p.random(1,3);
+		
+		ParticleSystem ps = new ParticleSystem(new PVector((float)ww[0],(float)ww[1]), new PVector(),1f,distMercurySun/3,color,lifespan, new PVector(vx,vy));
+		pss.add(ps);
+	}
 
+	@Override
+	public void mouseReleased(PApplet parent) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseDragged(PApplet parent) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
