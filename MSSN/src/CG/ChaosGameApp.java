@@ -49,6 +49,16 @@ public class ChaosGameApp implements IProcessingApp {
     }
 
     @Override
+    public void mouseReleased(PApplet parent) {
+
+    }
+
+    @Override
+    public void mouseDragged(PApplet parent) {
+
+    }
+
+    @Override
     public void keyPressed(PApplet p) {
 
     }

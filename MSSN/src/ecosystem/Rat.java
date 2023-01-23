@@ -50,7 +50,7 @@ public class Rat extends Animal {
     public boolean die() {
         return eaten || energy < 0;
     }
-
+    /**
     @Override
     public void display(PApplet p, SubPlot plt) {
         p.pushMatrix();
@@ -62,6 +62,7 @@ public class Rat extends Animal {
         // p.image(image_rat, 0, 0);
         p.popMatrix();
     }
+    */
 
     public void setEaten(boolean eaten) {
         this.eaten = eaten;

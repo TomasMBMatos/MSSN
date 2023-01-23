@@ -11,6 +11,7 @@ import ca.TestCA;
 import ca.TestCAFP;
 import ca.TestMajorityCA;
 import dla.DLA;
+import ecosystem.FpTerrainApp;
 import ecosystem.TestEcosystemApp;
 import ecosystem.TestObstaclesApp;
 import ecosystem.TestTerrainApp;
@@ -73,7 +74,7 @@ public class ProcessingSetup extends PApplet{
 	public static void main(String[] args) {
 		
 		//app = new TestObstaclesApp();
-		app = new TestEcosystemApp();
+		app = new FpTerrainApp();
 		//app = new TestTerrainApp();
 		//app = new TestMajorityCA();
 		//app = new TestCAFP();

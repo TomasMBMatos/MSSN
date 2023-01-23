@@ -14,7 +14,7 @@ public class WorldConstants {
     public final static double[] PATCH_TYPE_PROB = {0.1f, 0.2f, 0.3f, 0.4f, 0.0f};
     public final static int NSTATES = PatchType.values().length;
     public static int[][] TERRAIN_COLORS = {
-            {200+50, 200, 60}, {160, 30, 70}, {200, 200, 60}, {40, 200, 20}
+            {200+50, 200, 60}, {160, 30, 70}, {200, 200, 60}, {40, 200, 20}, {220, 130, 0}
     };
     public final static float[] REGENERATION_TIME = {10.f, 20.f}; // seconds
 

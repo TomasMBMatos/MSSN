@@ -14,32 +14,22 @@ import tools.SubPlot;
 import static ecosystem.WorldConstants.*;
 
 public class Population {
-	private List<Animal> allAnimals;
+	//private List<Animal> allAnimals;
 	private double[] window;
 	private boolean mutate = true;
     private List<Animal> preys;
     private List<Animal> predators;
     private boolean zeroPrey;
 
-	public Population(PApplet parent, SubPlot plt, Terrain terrain) {
+	public Population(PApplet p, SubPlot plt, Terrain terrain) {
 		window = plt.getWindow();
 		List<Body2> obstacles = terrain.getObstacles();
 		preys = new ArrayList<Animal>();
 		predators = new ArrayList<Animal>();
-		allAnimals = new ArrayList<Animal>();
-		for (int i = 0; i < WorldConstants.INI_PREY_POPULATION; i++) {
-			PVector pos = new PVector(parent.random((float) window[0], (float) window[1]),
-					parent.random((float) window[2], (float) window[3]));
-			int color = parent.color(WorldConstants.PREY_COLOR[0], WorldConstants.PREY_COLOR[1],
-					WorldConstants.PREY_COLOR[2]);
-			Animal a = new Prey(pos, WorldConstants.PREY_MASS, WorldConstants.PREY_SIZE, color, parent, plt);
-			a.addBehavior(new Wander2(1));
-			a.addBehavior(new AvoidObstacle(1));
-			Eye2 eye = new Eye2(a, obstacles);
-			a.setEye(eye);
-			allAnimals.add(a);
+		//allAnimals = new ArrayList<Animal>();
+		createPreyPopulation(p, plt, terrain, obstacles);
+		createPredatorPopulation(p, plt, terrain, obstacles, preys);
 
-		}
 	}
 
 	   public void createPreyPopulation(PApplet p, SubPlot plt, Terrain terrain, List<Body2> obstacles) {
@@ -86,6 +76,9 @@ public class Population {
 	    public List<Animal> getPreys(){
 	    	return preys;
 	    }
+
+		public int getNPreys() { return preys.size(); }
+		public int getNPredators() { return predators.size(); }
 	    public void update(float dt, Terrain terrain) {
 	        move(terrain, dt);
 	        System.out.println(preys);
@@ -102,57 +95,84 @@ public class Population {
 	}
 
 	public void move(Terrain terrain, float dt) {
-		for (Animal a : allAnimals)
+		for (Animal a : preys)
+			a.applyBehaviors(dt);
+		for(Animal a : predators)
 			a.applyBehaviors(dt);
 	}
 
 	public void eat(Terrain terrain) {
-		for (Animal a : allAnimals)
+		for (Animal a : preys)
+			a.eat(terrain);
+		for(Animal a : predators)
 			a.eat(terrain);
 	}
 
 	public void energy_consumption(float dt, Terrain terrain) {
-		for (Animal a : allAnimals)
+		for (Animal a : preys)
+			a.energy_consumption(dt, terrain);
+		for(Animal a : predators)
 			a.energy_consumption(dt, terrain);
 	}
 
 	public void die() {
-		for (int i = allAnimals.size() - 1; i >= 0; i--) {
-			Animal a = allAnimals.get(i);
-			if (a.die()) {
-				allAnimals.remove(a);
+		for(int i=preys.size()-1;i>=0;i--) {
+			Animal a = preys.get(i);
+			if(a.die()) {
+				preys.remove(a);
+			}
+		}
+
+		for(int i=predators.size()-1;i>=0;i--) {
+			Animal b = predators.get(i);
+			if(b.die()) {
+				predators.remove(b);
 			}
 		}
 	}
 
 	public void reproduce(boolean mutate) {
-		for (int i = allAnimals.size() - 1; i >= 0; i--) {
-			Animal a = allAnimals.get(i);
+		for(int i=preys.size()-1;i>=0;i--) {
+			Animal a = preys.get(i);
 			Animal child = a.reproduce(mutate);
-			if (child != null)
-				allAnimals.add(child);
+			if(child!=null) {
+				preys.add(child);
+			}
+		}
+
+		for(int i=preys.size()-1;i>=0;i--) {
+			Animal a = preys.get(i);
+			Animal child = a.reproduce(mutate);
+			if(child != null) {
+				preys.add(child);
+			}
 		}
 	}
 
 	public void display(PApplet p, SubPlot plt) {
-		for (Animal a : allAnimals)
+		for(Animal a : preys) {
 			a.display(p, plt);
+		}
+
+		for(Animal a : preys) {
+			a.display(p, plt);
+		}
 	}
 
 	public int getNumAnimals() {
-		return allAnimals.size();
+		return preys.size() + predators.size();
 	}
 
 	public float getMeanMaxSpeed() {
 		float sum = 0;
-		for (Animal a : allAnimals)
+		for (Animal a : preys)
 			sum += a.getDNA().maxSpeed;
-		return sum / allAnimals.size();
+		return sum / preys.size();
 	}
 
 	public float[] getMeanWeights() {
 		float[] sums = new float[2];
-		for (Animal a : allAnimals) {
+		for (Animal a : preys) {
 			sums[0] += a.getBehaviors().get(0).getWeight();
 			sums[1] += a.getBehaviors().get(1).getWeight();
 		}
@@ -162,9 +182,9 @@ public class Population {
 	public float getStdMaxSpeed() {
 		float mean = getMeanMaxSpeed();
 		float sum = 0;
-		for (Animal a : allAnimals)
+		for (Animal a : preys)
 			sum += Math.pow(a.getDNA().maxSpeed - mean, 2);
-		return (float) Math.sqrt(sum / allAnimals.size());
+		return (float) Math.sqrt(sum / preys.size());
 	}
 
 }
