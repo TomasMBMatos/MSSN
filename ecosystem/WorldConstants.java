@@ -6,8 +6,8 @@ public class WorldConstants {
     public final static double[] WINDOW = {-10,10,-10,10};
 
     // Terrain
-    public final static int NROWS = 45;
-    public final static int NCOLS = 60;
+    public final static int NROWS = 20;
+    public final static int NCOLS = 35;
     public static enum PatchType {
         EMPTY, OBSTACLE, FERTILE, FOOD, BASE
     }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import aa.AvoidObstacle;
 import aa.Body2;
+import aa.Evade;
 import aa.Eye2;
 import aa.Pursuit2;
 import aa.Wander2;
@@ -34,13 +35,13 @@ public class Population {
 
 	public void createPreyPopulation(PApplet p, SubPlot plt, Terrain terrain, List<Body2> obstacles) {
 		for (int i = 0; i < INI_PREY_POPULATION; i++) {
-			//System.out.println(terrain.getCavePos());
+			System.out.println(terrain.getCavePos());
 			PVector pos = terrain.getCavePos();
 			System.out.println(pos + "Hello");
 			int color = p.color(PREY_COLOR[0], PREY_COLOR[1], PREY_COLOR[2]);
 			Rat a = new Rat(pos, PREY_MASS, PREY_SIZE, color, p, plt);
-			a.addBehavior(new Wander2(2));
-			a.addBehavior(new AvoidObstacle(0));
+			a.addBehavior(new Wander2(10));
+			a.addBehavior(new AvoidObstacle(5));
 			Eye2 eye = new Eye2(a, obstacles);
 			a.setEye(eye);
 			preys.add(a);
@@ -57,7 +58,7 @@ public class Population {
 
 	public void createPredatorPopulation(PApplet p, SubPlot plt, Terrain terrain, List<Body2> obstacles,
 			List<Rat> preys) {
-		for (int i = 0; i < INI_PREY_POPULATION; i++) {
+		for (int i = 0; i < INI_PREDATOR_POPULATION; i++) {
 			PVector pos = new PVector(p.random((float) window[0], (float) window[1]),
 					p.random((float) window[2], (float) window[3]));
 
